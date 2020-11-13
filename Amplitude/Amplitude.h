@@ -5,7 +5,7 @@
 #import "AMPIdentify.h"
 #import "AMPRevenue.h"
 #import "AMPTrackingOptions.h"
-
+#import "AMPNetworkClient.h"
 
 /**
  Amplitude iOS SDK.
@@ -100,6 +100,10 @@
  */
 @property (nonatomic, assign) BOOL trackingSessionEvents;
 
+/**
+Network client to be used for event upload requests.
+ */
+@property (nonatomic, strong) id<AMPNetworkClient> networkClient;
 
 #pragma mark - Methods
 
@@ -125,6 +129,7 @@
  @see [Tracking Events to Multiple Amplitude Apps](https://github.com/amplitude/amplitude-ios#tracking-events-to-multiple-amplitude-apps)
  */
 + (Amplitude *)instanceWithName:(NSString*) instanceName;
+
 
 /**-----------------------------------------------------------------------------
  * @name Initialize the Amplitude SDK with your Amplitude API Key
@@ -531,6 +536,8 @@
 
 - (void)setTrackingOptions:(AMPTrackingOptions*) options;
 
+- (void)setServerUrl:(NSString*) serverUrl;
+
 /**-----------------------------------------------------------------------------
  * @name Other Methods
  * -----------------------------------------------------------------------------
@@ -573,6 +580,10 @@
  */
 - (void)uploadEvents;
 
+/**
+ Call to check if the SDK is ready to start a new session at timestamp. Returns YES if a new session was started, otherwise NO and current session is extended. Only use if you know what you are doing. Recommended to use current time in UTC milliseconds for timestamp.
+ */
+- (BOOL)startOrContinueSession:(long long) timestamp;
 
 #pragma mark - Deprecated methods
 
